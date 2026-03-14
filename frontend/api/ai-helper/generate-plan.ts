@@ -2,14 +2,16 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { OpenAI } from 'openai'
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: process.env.OPENAI_BASE_URL || 'https://api.siliconflow.cn/v1'
 })
+
+const defaultModel = process.env.OPENAI_MODEL || 'Qwen/Qwen2.5-7B-Instruct'
 
 export default async function handler(
   request: VercelRequest,
   response: VercelResponse
 ) {
-  // Only allow POST
   if (request.method !== 'POST') {
     return response.status(405).json({ error: 'Method not allowed' })
   }
@@ -22,7 +24,7 @@ export default async function handler(
 
   try {
     const result = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: defaultModel,
       messages: [
         {
           role: 'system',
