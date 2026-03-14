@@ -1,9 +1,16 @@
 class AIService {
-  private apiKey: string = ''
+  private apiBase: string = ''
+
+  constructor() {
+    // Vercel 部署时自动使用 /api/ai-helper
+    this.apiBase = import.meta.env.VITE_API_URL
+      ? `${import.meta.env.VITE_API_URL}/ai-helper`
+      : '/api/ai-helper'
+  }
 
   async generatePlan(prompt: string): Promise<string> {
     try {
-      const response = await fetch('http://localhost:3000/api/ai/generate-plan', {
+      const response = await fetch(`${this.apiBase}/generate-plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,7 +32,7 @@ class AIService {
 
   async optimizeContent(content: string): Promise<string> {
     try {
-      const response = await fetch('http://localhost:3000/api/ai/optimize-content', {
+      const response = await fetch(`${this.apiBase}/optimize-content`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +54,7 @@ class AIService {
 
   async generateFlashcard(content: string): Promise<any> {
     try {
-      const response = await fetch('http://localhost:3000/api/ai/generate-flashcard', {
+      const response = await fetch(`${this.apiBase}/generate-flashcard`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

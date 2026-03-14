@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { cacheService } from './cache'
 
-const API_BASE_URL = 'http://localhost:3000/api'
+// 开发环境用本地后端，生产环境用 Vercel 部署的后端
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
